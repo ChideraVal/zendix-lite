@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jobs • Zendix Lite</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/jobs.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="navbar-inner">
+
+            <a href="jobs.html" class="navbar-logo">
+                Zendix Lite
+            </a>
+
+            <button id="menuButton" class="menu-button" aria-label="Toggle navigation">
+
+                ☰
+
+            </button>
+
+            <div id="navLinks" class="nav-links">
+
+                <a href="jobs.html" data-page="jobs">
+                    Jobs
+                </a>
+
+                <a href="schemas.html" data-page="schemas">
+                    Schemas
+                </a>
+
+                <a href="settings.html" data-page="settings">
+                    Settings
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <main class="page">
+
+        <!-- ===================================================== -->
+        <!-- Page Header -->
+        <!-- ===================================================== -->
+
+        <section class="page-header">
+
+            <div>
+
+                <h1>Jobs</h1>
+
+                <p>
+                    View and manage your completed extractions.
+                </p>
+
+            </div>
+
+            <!-- <button id="newExtractionBtn" class="primary-btn">
+                New Extraction
+            </button> -->
+
+            <a href="upload.html" class="primary-btn">
+                New Extraction
+            </a>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- Search & Filters -->
+        <!-- ===================================================== -->
+
+        <section class="toolbar">
+
+            <div class="search-container">
+
+                <input id="searchInput" type="text" placeholder="Search by job, file, document type or schema...">
+
+            </div>
+
+            <div class="filter-group">
+
+                <select id="statusFilter">
+
+                    <option value="all">All Statuses</option>
+                    <option value="successful">Successful</option>
+                    <option value="failed">Failed</option>
+
+                </select>
+
+                <select id="approvalFilter">
+
+                    <option value="all">All Approval</option>
+                    <option value="approved">Approved</option>
+                    <option value="unapproved">Unapproved</option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- Statistics -->
+        <!-- ===================================================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <span class="stat-label">Total Jobs</span>
+
+                <span id="totalJobs" class="stat-value">
+                    0
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span class="stat-label">Successful</span>
+
+                <span id="successfulJobs" class="stat-value">
+                    0
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span class="stat-label">Failed</span>
+
+                <span id="failedJobs" class="stat-value">
+                    0
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span class="stat-label">Approved</span>
+
+                <span id="approvedJobs" class="stat-value">
+                    0
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- Jobs Table -->
+        <!-- ===================================================== -->
+
+        <section class="table-card">
+
+            <div class="table-wrapper">
+
+                <table class="jobs-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Job</th>
+
+                            <th>Document Type</th>
+
+                            <th>Schema</th>
+
+                            <th>File Count</th>
+
+                            <th>Status</th>
+
+                            <th>Approval</th>
+
+                            <th>Created</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="jobsTableBody">
+
+                        <!-- Rendered by jobs.js -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- <div
+                id="emptyState"
+                class="empty-state hidden">
+
+                <h3>No jobs found</h3>
+
+                <p>
+                    Create a new extraction to get started.
+                </p>
+
+                <button id="emptyStateButton" class="primary-btn">
+
+                    New Extraction
+
+                </button>
+
+            </div> -->
+
+            <div id="emptyState" class="empty-state hidden">
+
+                <h3 id="emptyStateTitle"></h3>
+
+                <p id="emptyStateMessage"></p>
+
+                <button id="emptyStateButton" class="primary-btn">
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- Pagination -->
+        <!-- ===================================================== -->
+
+        <!-- <section
+            id="pagination"
+            class="pagination hidden">
+
+            <button id="previousPageBtn" class="primary-btn">
+
+                Previous
+
+            </button>
+
+            <span id="pageIndicator">
+
+                Page 1 of 1
+
+            </span>
+
+            <button id="nextPageBtn" class="primary-btn">
+
+                Next
+
+            </button>
+
+        </section> -->
+
+        <section id="pagination" class="pagination hidden">
+
+            <span id="pageIndicator">
+
+                Page 1 of 1
+
+            </span>
+
+            <div class="page-buttons">
+
+                <button id="previousPageBtn" class="primary-btn">
+
+                    Previous
+
+                </button>
+
+                <button id="nextPageBtn" class="primary-btn">
+
+                    Next
+
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ===================================================== -->
+    <!-- Action Menu -->
+    <!-- ===================================================== -->
+
+    <div id="actionMenu" class="action-menu hidden">
+
+        <!-- Filled dynamically -->
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- Rename Modal -->
+    <!-- ===================================================== -->
+
+    <div id="renameModal" class="modal">
+
+        <div class="modal-card">
+
+            <h3>
+
+                Rename Job
+
+            </h3>
+
+            <div class="modal-body">
+
+                <input id="renameInput" type="text" maxlength="100" placeholder="Job name">
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button id="cancelRenameBtn" class="secondary-btn">
+
+                    Cancel
+
+                </button>
+
+                <button id="saveRenameBtn" class="primary-btn">
+
+                    Save
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- Delete Modal -->
+    <!-- ===================================================== -->
+
+    <div id="deleteModal" class="modal">
+
+        <div class="modal-card">
+
+            <h3>
+
+                Delete Job
+
+            </h3>
+
+            <div class="modal-body">
+
+                <p>
+
+                    This action cannot be undone.
+
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button id="cancelDeleteBtn" class="secondary-btn">
+
+                    Cancel
+
+                </button>
+
+                <button id="confirmDeleteBtn" class="danger-btn">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- Error Details Modal -->
+    <!-- ===================================================== -->
+
+    <div id="errorModal" class="modal">
+
+        <div class="modal-card">
+
+            <h3>
+
+                Extraction Failed
+
+            </h3>
+
+            <div class="modal-body">
+
+                <p id="errorMessage">
+
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button id="closeErrorBtn" class="secondary-btn">
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================
+        Toast
+    ========================== -->
+
+    <div id="toast" class="toast">
+
+    </div>
+
+    <script src="js/helpers/utils.js"></script>
+    <script src="js/helpers/storage.js"></script>
+    <script src="js/helpers/api.js"></script>
+
+    <script src="js/common.js"></script>
+    <script src="js/jobs.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,370 @@
+/* ==========================================
+   Schema Editor
+   Shared by:
+   - create-schema.html
+   - edit-schema.html
+========================================== */
+
+:root{
+    --editor-gap: 24px;
+    --card-radius: 16px;
+    --border: #e5e7eb;
+    --background: #f5f7fb;
+    --panel-bg: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+}
+
+/* ==========================================
+   Page Layout
+========================================== */
+
+/* .page{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px;
+} */
+
+.container{
+    display:flex;
+    gap:var(--editor-gap);
+    align-items:flex-start;
+}
+
+.pane{
+    background:var(--panel-bg);
+    border:1px solid var(--border);
+    border-radius:var(--card-radius);
+    padding:28px;
+    box-shadow:0 12px 28px rgba(15,23,42,.05);
+}
+
+.container .pane:first-child{
+    flex:1;
+}
+
+.container .pane:last-child{
+    width:360px;
+    position:sticky;
+    /* top:24px; */
+    top:90px;
+}
+
+/* ==========================================
+   Headings
+========================================== */
+
+h1{
+    margin:0;
+    font-size:2rem;
+}
+
+h2{
+    margin:0;
+    font-size:1.2rem;
+}
+
+.page-description,
+.tree-description{
+    color:var(--muted);
+    margin-top:10px;
+    margin-bottom:28px;
+    line-height:1.6;
+}
+
+/* ==========================================
+   Inputs
+========================================== */
+
+.input-group{
+    margin-bottom:26px;
+}
+
+.input-group label,
+.label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:var(--text);
+    font-size:.92rem;
+}
+
+input[type=text],
+textarea,
+select{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    font-size:.95rem;
+    background:#fff;
+    transition:.2s;
+
+    margin-bottom: .5rem;
+}
+
+textarea{
+    resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+/* ==========================================
+   Section Header
+========================================== */
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+/* ==========================================
+   Field Cards
+========================================== */
+
+.field-card,
+.nested-field-card{
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:18px;
+    background:#fff;
+    transition:.2s;
+}
+
+.field-card:hover,
+.nested-field-card:hover{
+    border-color:#d4d4d8;
+}
+
+.nested-field-card{
+    margin-left:18px;
+    border-left:5px solid var(--primary);
+}
+
+/* ==========================================
+   Buttons
+========================================== */
+
+.page button{
+    cursor:pointer;
+    border:none;
+    transition:.2s;
+    font-size:.92rem;
+    font-weight:600;
+}
+
+.primary-btn{
+    background:var(--primary);
+    color:#fff;
+    padding:12px 22px;
+    border-radius:12px;
+}
+
+.primary-btn:hover{
+    background:var(--primary-hover);
+}
+
+.secondary-btn{
+    background:#eef4ff;
+    color:var(--primary);
+    padding:10px 18px;
+    border-radius:12px;
+}
+
+.secondary-btn:hover{
+    background:#dbeafe;
+}
+
+.small{
+    padding:9px 16px;
+    border-radius:10px;
+    background:#eef4ff;
+    color:var(--primary);
+}
+
+.small:hover{
+    background:#dbeafe;
+}
+
+.remove{
+    background:var(--danger);
+    color:white;
+}
+
+.remove:hover{
+    background:var(--danger-hover);
+}
+
+button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+/* ==========================================
+   Group Sections
+========================================== */
+
+.object-config,
+.array-config{
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid #edf0f3;
+}
+
+.section-label{
+    font-size:.9rem;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:12px;
+}
+
+/* ==========================================
+   Validation
+========================================== */
+
+.errors{
+    margin-top:24px;
+    padding:18px;
+    border-radius:12px;
+    background:#fef2f2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+}
+
+.errors ul{
+    margin:12px 0 0;
+    padding-left:18px;
+}
+
+.invalid{
+    border-color:var(--danger)!important;
+}
+
+/* ==========================================
+   Tree Preview
+========================================== */
+
+.tree-preview{
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#fafafa;
+    padding:18px;
+    min-height:320px;
+    /* max-height:75vh; */
+    max-height:45vh;
+    overflow:auto;
+}
+
+.tree-preview ul{
+    list-style:none;
+    margin:0;
+    padding-left:18px;
+}
+
+.tree-preview li{
+    margin:8px 0;
+    position:relative;
+}
+
+.tree-preview li::before{
+    content:"";
+    position:absolute;
+    left:-12px;
+    top:12px;
+    width:8px;
+    border-top:1px solid #d1d5db;
+}
+
+.tree-name{
+    font-weight:600;
+    color:#111827;
+}
+
+.tree-separator{
+    color:#9ca3af;
+    margin:0 4px;
+}
+
+.tree-type{
+    color:var(--primary);
+    font-weight:500;
+}
+
+/* ==========================================
+   Scrollbars
+========================================== */
+
+.tree-preview::-webkit-scrollbar{
+    width:7px;
+}
+
+.tree-preview::-webkit-scrollbar-thumb{
+    background:#d1d5db;
+    border-radius:10px;
+}
+
+.tree-preview::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:1000px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .container .pane:first-child{
+        width:100%;
+        position:static;
+    }
+
+
+    .container .pane:last-child{
+        width:100%;
+        position:static;
+    }
+}
+
+@media (max-width:700px){
+
+    /* .page{
+        padding:18px;
+    } */
+
+    .pane{
+        padding:20px;
+    }
+
+    .nested-field-card{
+        margin-left:10px;
+    }
+
+    .section-header{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .section-header button{
+        width:100%;
+    }
+
+}

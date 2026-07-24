@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings • Zendix Lite</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/settings.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="navbar-inner">
+
+            <a href="jobs.html" class="navbar-logo">
+                Zendix Lite
+            </a>
+
+            <button id="menuButton" class="menu-button" aria-label="Toggle navigation">
+
+                ☰
+
+            </button>
+
+            <div id="navLinks" class="nav-links">
+
+                <a href="jobs.html" data-page="jobs">
+                    Jobs
+                </a>
+
+                <a href="schemas.html" data-page="schemas">
+                    Schemas
+                </a>
+
+                <a href="settings.html" data-page="settings">
+                    Settings
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <div class="page">
+
+        <!-- ==========================
+         Header
+    =========================== -->
+
+        <header class="page-header">
+
+            <h1 class="page-title">
+                Settings
+            </h1>
+
+            <p class="page-subtitle">
+                Manage your access code and application preferences.
+            </p>
+
+        </header>
+
+        <!-- ==========================
+         Access Code
+    =========================== -->
+
+        <section class="card">
+
+            <h2 class="card-title">
+                Access Code
+            </h2>
+
+            <p class="card-description">
+                Enter the access code you received after purchasing Zendix Lite.
+                The code is stored only in this browser.
+            </p>
+
+            <div class="form-group">
+
+                <label for="accessCode">
+                    Access Code
+                </label>
+
+                <div class="password-group">
+
+                    <input id="accessCode" type="password" placeholder="Enter your access code">
+
+                    <button id="toggleAccessCode" class="btn secondary-btn" type="button">
+
+                        Show
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="button-row">
+
+                <button id="saveAccessCode" class="btn primary-btn">
+
+                    Save Access Code
+
+                </button>
+
+            </div>
+
+            <p class="help-text">
+                Your access code will not be validated until you perform an extraction.
+            </p>
+
+        </section>
+
+        <!-- ==========================
+         Usage
+    =========================== -->
+
+        <section class="card">
+
+            <div class="section-header">
+
+                <h2 class="card-title">
+                    Usage
+                </h2>
+
+                <span class="badge badge-warning">
+                    Coming Soon
+                </span>
+
+            </div>
+
+            <div class="usage-grid">
+
+                <div class="usage-box">
+
+                    <div class="usage-label">
+                        Remaining Pages
+                    </div>
+
+                    <div class="usage-value">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="usage-box">
+
+                    <div class="usage-label">
+                        Total Processed
+                    </div>
+
+                    <div class="usage-value">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="usage-box">
+
+                    <div class="usage-label">
+                        Plan
+                    </div>
+
+                    <div class="usage-value">
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ==========================
+         About
+    =========================== -->
+
+        <section class="card">
+
+            <h2 class="card-title">
+                About
+            </h2>
+
+            <div class="info-list">
+
+                <div class="info-row">
+
+                    <span>Application</span>
+
+                    <strong>Zendix Lite</strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>Version</span>
+
+                    <strong>1.0.0</strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>Storage</span>
+
+                    <strong>Local Browser Storage</strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="card">
+
+            <h3 class="card-title">Backup & Restore</h3>
+
+            <p class="muted card-description">
+                Export all schemas, jobs, uploaded files and settings to a backup file.
+            </p>
+
+            <div class="danger-buttons">
+
+                <button id="exportBackupBtn" class="btn primary-btn">
+                    Export Backup
+                </button>
+
+                <button id="importBackupBtn" class="btn primary-btn">
+                    Import Backup
+                </button>
+            
+            </div>
+
+            <input id="backupFileInput" type="file" accept=".json,application/json" hidden>
+
+        </div>
+
+        <!-- ==========================
+         Danger Zone
+    =========================== -->
+
+        <section class="card danger-card">
+
+            <h2 class="card-title">
+                Danger Zone
+            </h2>
+
+            <p class="danger-text">
+
+                These actions cannot be undone.
+
+            </p>
+
+            <div class="danger-buttons">
+
+                <button id="clearAccessCode" class="btn danger-btn">
+
+                    Clear Access Code
+
+                </button>
+
+                <button id="clearAllData" class="btn danger-btn">
+
+                    Clear All Local Data
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- ==========================
+     Confirmation Modal
+========================== -->
+
+    <div id="confirmModal" class="modal">
+
+        <div class="modal-card">
+
+            <h3>
+                Confirm Action
+            </h3>
+
+            <div class="modal-body">
+
+                <p id="confirmMessage">
+
+                    Are you sure?
+
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button id="cancelAction" class="btn secondary-btn">
+
+                    Cancel
+
+                </button>
+
+                <button id="confirmAction" class="btn danger-btn">
+
+                    Continue
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="importBackupModal" class="modal">
+
+        <div class="modal-card">
+
+            <h3>Import Backup</h3>
+
+            <div class="modal-body">
+
+                <p>
+                    Importing a backup will replace your current access code,
+                    settings, schemas, jobs and uploaded files.
+                    This action cannot be undone.
+                </p>
+                
+            </div>
+
+            <div class="modal-actions">
+
+                <button id="cancelImportBackupBtn" class="btn secondary-btn">
+
+                    Cancel
+
+                </button>
+
+                <button id="confirmImportBackupBtn" class="btn primary-btn">
+
+                    Import Backup
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================
+     Toast
+========================== -->
+
+    <div id="toast" class="toast">
+
+    </div>
+
+    <script src="js/helpers/storage.js"></script>
+    <script src="js/helpers/utils.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/common.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Retry Extraction - Zendix</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/upload.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="navbar-inner">
+
+            <a href="jobs.html" class="navbar-logo">
+                Zendix Lite
+            </a>
+
+            <button id="menuButton" class="menu-button" aria-label="Toggle navigation">
+
+                ☰
+
+            </button>
+
+            <div id="navLinks" class="nav-links">
+
+                <a href="jobs.html" data-page="jobs">
+                    Jobs
+                </a>
+
+                <a href="schemas.html" data-page="schemas">
+                    Schemas
+                </a>
+
+                <a href="settings.html" data-page="settings">
+                    Settings
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <div class="page">
+
+        <div class="page-header">
+            <div>
+                <h1 id="action-label">Retry Extraction</h1>
+                <p id="job-label"></p>
+            </div>
+
+            <!-- <a href="jobs.html" class="secondary-btn">
+                View All Jobs
+            </a> -->
+        </div>
+
+
+        <div class="card">
+
+            <div class="form-group">
+
+                <label for="schemaSelect">
+                    Extraction Schema
+                </label>
+
+                <select id="schemaSelect">
+                    <option value="">
+                        Select a schema
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="documentType">
+                    Document Type
+                </label>
+
+                <select id="documentType">
+
+                    <option value="">
+                        Select a document type
+                    </option>
+
+                    <option value="Invoice">
+                        Invoice
+                    </option>
+
+                    <option value="Receipt">
+                        Receipt
+                    </option>
+
+                    <option value="Purchase Order">
+                        Purchase Order
+                    </option>
+
+                    <option value="Bank Statement">
+                        Bank Statement
+                    </option>
+
+                    <option value="Shipping Label">
+                        Shipping Label
+                    </option>
+
+                    <option value="Bill of Lading">
+                        Bill of Lading
+                    </option>
+
+                    <option value="Insurance Document">
+                        Insurance Document
+                    </option>
+
+                    <option value="Lease Agreement">
+                        Lease Agreement
+                    </option>
+
+                    <option value="Utility Bill">
+                        Utility Bill
+                    </option>
+
+                    <option value="Identity Document">
+                        Identity Document
+                    </option>
+
+                    <option value="Tax Document">
+                        Tax Document
+                    </option>
+
+                    <option value="Contract">
+                        Contract
+                    </option>
+
+                    <option value="Other">
+                        Other (Custom)
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="customDocumentTypeContainer" class="form-group hidden">
+
+                <label for="customDocumentType">
+                    Custom Document Type
+                </label>
+
+                <input id="customDocumentType" type="text" maxlength="100" placeholder="Enter document type">
+
+            </div>
+
+
+            <!-- <div id="dropZone" class="drop-zone">
+
+                <div class="drop-zone-content">
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        Drag & Drop Files
+                    </h3>
+
+                    <p>
+                        or
+                    </p>
+
+                    <button id="browseBtn" type="button" class="secondary-btn">
+
+                        Browse Files
+
+                    </button>
+
+                    <p class="supported-files">
+                        PDF, PNG, JPG, JPEG, WEBP and TXT
+                    </p>
+
+                </div>
+
+                <input id="fileInput" type="file" multiple hidden>
+
+            </div> -->
+
+
+            <label style="margin-bottom: 8px; display: block;">Files</label>
+            <div id="fileList" class="file-list">
+
+            </div>
+
+
+            <button id="extractBtn" class="primary-btn" disabled>
+
+                Retry Extraction
+
+            </button>
+
+
+            <div id="requirements" class="requirements">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Processing Modal -->
+
+    <div id="processingModal" class="modal">
+
+        <div class="modal-card">
+
+            <div id="modalSpinner" class="spinner">
+            </div>
+
+            <div id="modalIcon" class="modal-icon hidden">
+            </div>
+
+            <h3 id="modalTitle">
+                Processing Extraction
+            </h3>
+
+            <div class="modal-body">
+
+                <p id="modalMessage">
+                    Please wait while your files are being processed.
+                </p>
+                
+            </div>
+            <div id="modalActions" class="modal-actions hidden">
+
+                <button id="newExtractionBtn" class="primary-btn">
+
+                    Continue
+
+                </button>
+
+                <button id="viewJobsBtn" class="secondary-btn">
+
+                    View Jobs
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Inactivity Overlay -->
+
+    <div id="inactiveOverlay" class="modal">
+
+        <div class="modal-card">
+
+            <h3>
+                Session Expired
+            </h3>
+
+            <div class="modal-body">
+
+                <p>
+                    Your session became inactive, so the connection to the server has been stopped.
+                </p>
+                
+            </div>
+
+            <button id="restartSessionBtn" class="primary-btn">
+
+                Restart Session
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================
+        Toast
+    ========================== -->
+
+    <div id="toast" class="toast">
+
+    </div>
+
+    <script src="js/helpers/utils.js"></script>
+    <script src="js/helpers/storage.js"></script>
+    <script src="js/helpers/api.js"></script>
+
+    <script src="js/retry.js"></script>
+    <script src="js/common.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Review Extraction - Zendix Lite</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/review.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="navbar-inner">
+
+            <a href="jobs.html" class="navbar-logo">
+                Zendix Lite
+            </a>
+
+            <button id="menuButton" class="menu-button" aria-label="Toggle navigation">
+
+                ☰
+
+            </button>
+
+            <div id="navLinks" class="nav-links">
+
+                <a href="jobs.html" data-page="jobs">
+                    Jobs
+                </a>
+
+                <a href="schemas.html" data-page="schemas">
+                    Schemas
+                </a>
+
+                <a href="settings.html" data-page="settings">
+                    Settings
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <div class="page">
+
+        <header class="page-header">
+
+            <div>
+                <h1 id="jobTitle">Review Extraction</h1>
+                <p id="jobSubtitle" class="muted">
+                    Review and edit extracted data.
+                </p>
+            </div>
+
+        </header>
+
+        <div class="review-layout">
+
+            <!-- LEFT PANEL -->
+            <aside class="review-sidebar">
+
+                <!-- Job Details -->
+                <section class="card">
+
+                    <h2>Job Details</h2>
+
+                    <div id="jobDetails"></div>
+
+                </section>
+
+                <!-- Files -->
+                <section class="card">
+
+                    <h2>Files</h2>
+
+                    <div id="fileList"></div>
+
+                </section>
+
+                <!-- Preview -->
+                <section class="card">
+
+                    <div class="preview">
+                        <h2>Preview</h2>
+                        <div style="display: flex; gap: 1rem;">
+                            <a id="openInNewTab" target="_blank" rel="noopener noreferrer" style="font-size: 15px;"></a>
+                            <a id="downloadFile" target="_blank" rel="noopener noreferrer" download style="font-size: 15px;"></a>
+                        </div>
+                    </div>
+
+                    <div id="filePreview" class="file-preview">
+
+                        <div class="empty-state">
+                            Select a file to preview.
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </aside>
+
+            <!-- RIGHT PANEL -->
+            <main class="review-content">
+
+                <div class="editor-toolbar">
+
+                    <button id="downloadBtn" class="btn secondary" onclick="downloadJSON()">
+                        Download JSON
+                    </button>
+
+                    <button id="viewTableBtn" class="btn secondary">
+                        View In Table
+                    </button>
+
+                    
+                    <button id="saveBtn" class="btn secondary">
+                        Save
+                    </button>
+                    
+                    <button id="approveBtn" class="btn primary">
+                        Approve
+                    </button>
+                    
+                    <button id="retryBtn" class="btn primary">
+                        Retry Extraction
+                    </button>
+                </div>
+
+                <div id="formArea" class="card">
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- JSON Editor Confirmation Modal -->
+    <div id="confirmBackdrop" class="modal">
+
+        <div class="modal-card">
+
+            <h3 id="confirmTitle">
+                Confirm Removal
+            </h3>
+
+            <div class="modal-body">
+
+                <p id="confirmMessage">
+                    Are you sure you want to remove this item?
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button id="confirmCancel" class="secondary-btn">
+
+                    Cancel
+
+                </button>
+
+                <button id="confirmOk" class="danger-btn">
+
+                    Remove
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">
+    </div>
+
+    <script src="js/helpers/storage.js"></script>
+    <script src="js/helpers/utils.js"></script>
+    <script src="js/review.js"></script>
+    <script src="js/common.js"></script>
+
+</body>
+
+</html>

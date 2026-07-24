@@ -1,0 +1,654 @@
+/* ==========================================================
+   PAGE HEADER
+========================================================== */
+
+.page-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    margin-bottom: 2rem;
+
+}
+
+.page-header h1 {
+
+    margin: 0;
+
+}
+
+.page-header p {
+
+    margin: .4rem 0 0;
+    color: #6b7280;
+
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+/* .primary-btn,
+.secondary-btn,
+.danger-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+
+    min-width: 120px;
+    height: 44px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: .2s;
+}
+
+.primary-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+.secondary-btn {
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.secondary-btn:hover {
+    background: #e2e8f0;
+}
+
+.danger-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.danger-btn:hover {
+    background: #b91c1c;
+} */
+
+
+/* ==========================================================
+   TOOLBAR
+========================================================== */
+
+.toolbar {
+
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 1rem;
+
+    align-items: center;
+
+    margin-bottom: 1.5rem;
+
+}
+
+.search-container {
+
+    min-width: 0;
+
+}
+
+.search-container input {
+
+    width: 100%;
+
+}
+
+.filter-group {
+
+    display: contents;
+
+}
+
+.filter-group select {
+
+    width: 180px;
+
+}
+
+/* ==========================================================
+   STATISTICS
+========================================================== */
+
+.stats-grid {
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+
+    margin-bottom: 2rem;
+
+}
+
+.stat-card {
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: .9rem;
+
+    padding: 1rem;
+
+}
+
+.stat-label {
+
+    display: block;
+
+    color: #6b7280;
+
+    font-size: .9rem;
+
+}
+
+.stat-value {
+
+    display: block;
+
+    margin-top: .35rem;
+
+    font-size: 1.8rem;
+
+    font-weight: 700;
+
+}
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.table-card {
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 1rem;
+
+    overflow: hidden;
+
+}
+
+.table-wrapper {
+
+    overflow-x: auto;
+
+}
+
+.jobs-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+.jobs-table thead {
+
+    background: #f9fafb;
+
+}
+
+.jobs-table th {
+
+    padding: 1rem;
+
+    text-align: left;
+
+    font-size: .9rem;
+
+    font-weight: 600;
+
+    color: #374151;
+
+    white-space: nowrap;
+
+}
+
+.jobs-table td {
+
+    padding: 1rem;
+
+    border-top: 1px solid #f1f5f9;
+
+    vertical-align: middle;
+
+}
+
+.jobs-table tbody tr:hover {
+
+    background: #fafcff;
+
+}
+
+/* ==========================================================
+   JOB COLUMN
+========================================================== */
+
+.job-name {
+
+    font-weight: 600;
+
+    color: #111827;
+
+}
+
+.job-id {
+
+    display: block;
+
+    margin-top: .2rem;
+
+    font-size: .8rem;
+
+    color: #9ca3af;
+
+}
+
+/* ==========================================================
+   BADGES
+========================================================== */
+
+.badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: .35rem .75rem;
+
+    border-radius: 999px;
+
+    font-size: .82rem;
+
+    font-weight: 600;
+
+}
+
+.badge-success {
+
+    background: #ecfdf5;
+
+    color: #047857;
+
+}
+
+.badge-failed {
+
+    background: #fef2f2;
+
+    color: #dc2626;
+
+}
+
+.badge-approved {
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+}
+
+.badge-unapproved {
+
+    background: #f3f4f6;
+
+    color: #6b7280;
+
+}
+
+/* ==========================================================
+   ACTION BUTTON
+========================================================== */
+
+.action-button {
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+
+    border-radius: .65rem;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 1.25rem;
+
+}
+
+.action-button:hover {
+
+    background: #f3f4f6;
+
+}
+
+/* ==========================================================
+   FLOATING ACTION MENU
+========================================================== */
+
+.action-menu {
+
+    position: fixed;
+
+    z-index: 3000;
+
+    min-width: 220px;
+    max-width: 220px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: .8rem;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+
+    overflow: hidden;
+
+}
+
+.action-menu.hidden {
+
+    display: none;
+
+}
+
+.action-menu button {
+
+    width: 100%;
+
+    border: none;
+
+    background: white;
+
+    color: #374151;
+
+    text-align: left;
+
+    padding: .9rem 1rem;
+
+    cursor: pointer;
+
+}
+
+.action-menu button:hover {
+
+    background: #f9fafb;
+
+}
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.empty-state {
+
+    padding: 4rem 2rem;
+
+    text-align: center;
+
+}
+
+.empty-state.hidden {
+
+    display: none;
+
+}
+
+.empty-state h3 {
+
+    margin-bottom: .5rem;
+
+}
+
+.empty-state p {
+
+    color: #6b7280;
+
+    margin-bottom: 1.5rem;
+
+}
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
+
+/* .pagination {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    margin-top: 2rem;
+
+}
+
+.pagination.hidden {
+
+    display: none;
+
+} */
+
+.pagination {
+
+    display: flex;
+    
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    margin-top: 2rem;
+
+}
+
+.page-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.pagination.hidden {
+
+    display: none;
+
+}
+
+/* ==========================================================
+   MODALS
+========================================================== */
+
+/* .modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, .45);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 1000;
+
+}
+
+.modal-overlay.hidden {
+
+    display: none;
+
+}
+
+.modal {
+
+    width: min(420px, 92vw);
+
+    background: white;
+
+    border-radius: 1rem;
+
+    padding: 1.5rem;
+
+}
+
+.modal h2 {
+
+    margin-top: 0;
+
+}
+
+.modal p {
+
+    color: #6b7280;
+
+}
+
+.modal input {
+
+    margin: 1rem 0;
+
+}
+
+.modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: .75rem;
+
+} */
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 1000px) {
+
+    .stats-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .page-header {
+
+        flex-direction: column;
+        align-items: stretch;
+
+    }
+
+    .toolbar {
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+    }
+
+    .filter-group {
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+    }
+
+    .filter-group select {
+
+        width: 100%;
+
+    }
+
+    .stats-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .jobs-table,
+    .jobs-table thead,
+    .jobs-table tbody,
+    .jobs-table th,
+    .jobs-table td,
+    .jobs-table tr {
+
+        display: block;
+
+    }
+
+    .jobs-table thead {
+
+        display: none;
+
+    }
+
+    .jobs-table tr {
+
+        border-bottom: 1px solid #e5e7eb;
+
+        padding: 1rem;
+
+    }
+
+    .jobs-table td {
+
+        border: none;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 1rem;
+
+        padding: .45rem 0;
+
+    }
+
+    .jobs-table td::before {
+
+        content: attr(data-label);
+
+        font-weight: 600;
+
+        color: #6b7280;
+
+    }
+
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Schema - Zendix</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/create-schema.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="navbar-inner">
+
+            <a href="jobs.html" class="navbar-logo">
+                Zendix Lite
+            </a>
+
+            <button id="menuButton" class="menu-button" aria-label="Toggle navigation">
+
+                ☰
+
+            </button>
+
+            <div id="navLinks" class="nav-links">
+
+                <a href="jobs.html" data-page="jobs">
+                    Jobs
+                </a>
+
+                <a href="schemas.html" data-page="schemas">
+                    Schemas
+                </a>
+
+                <a href="settings.html" data-page="settings">
+                    Settings
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page">
+
+        <div class="container">
+
+            <!-- Left Pane -->
+            <section class="pane">
+
+                <h1>Create Schema</h1>
+
+                <p class="page-description">
+                    Define the structure of data you want Zendix AI to extract from your
+                    documents.
+                </p>
+
+                <div class="input-group">
+                    <label for="schemaName">
+                        Schema Name
+                    </label>
+
+                    <input id="schemaName" type="text" placeholder="Example: Invoice Extraction"
+                        oninput="renderAndValidate()">
+                </div>
+
+                <div class="input-group">
+                    <label for="schemaDescription">
+                        Schema Description
+                    </label>
+
+                    <textarea id="schemaDescription" type="text"
+                        placeholder="Describe your schema (optional)"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <button id="saveBtn" class="primary-btn">
+                        Save Schema
+                    </button>
+                </div>
+
+                <div class="section-header">
+                    <h2>Fields</h2>
+
+                    <!-- <button id="addRootFieldBtn" onclick="addField()" class="secondary-btn" type="button">
+                        + Add Top-level Field
+                    </button> -->
+                </div>
+
+                <div id="fieldsContainer"></div>
+
+                <button id="addRootFieldBtn" onclick="addField()" class="secondary-btn" type="button">
+                    + Add Top-level Field
+                </button>
+
+                <div id="validationErrors"></div>
+
+            </section>
+
+            <!-- Right Pane -->
+            <aside class="pane">
+
+                <h2>Schema Tree</h2>
+
+                <p class="tree-description">
+                    Live preview of your extraction schema.
+                </p>
+
+                <div id="treePreview" class="tree-preview">
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- ==========================
+     Toast
+========================== -->
+
+    <div id="toast" class="toast">
+
+    </div>
+
+    <script src="js/helpers/storage.js"></script>
+    <script src="js/helpers/utils.js"></script>
+    <script src="js/schema-builder.js"></script>
+    <script src="js/create-schema.js"></script>
+    <script src="js/common.js"></script>
+
+</body>
+
+</html>

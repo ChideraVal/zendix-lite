@@ -1,0 +1,202 @@
+/* ==========================================================
+   Settings Page
+   ========================================================== */
+
+/* ===========================
+   Card Description
+=========================== */
+
+.card-description{
+    color:var(--gray-500);
+    margin-bottom:22px;
+    max-width:650px;
+}
+
+/* ===========================
+   Password Input
+=========================== */
+
+.password-group{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.password-group input{
+    flex:1;
+}
+
+.password-group button{
+    min-width:90px;
+}
+
+/* ===========================
+   Save Button
+=========================== */
+
+.button-row{
+    display:flex;
+    justify-content:flex-start;
+    margin-top:6px;
+}
+
+/* ===========================
+   Help Text
+=========================== */
+
+.help-text{
+    margin-top:16px;
+    color:var(--gray-500);
+    font-size:.9rem;
+    line-height:1.5;
+}
+
+/* ===========================
+   Usage Section
+=========================== */
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.usage-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.usage-box{
+    background:var(--gray-50);
+    border:1px solid var(--gray-200);
+    border-radius:16px;
+    padding:22px;
+    text-align:center;
+    transition:var(--transition);
+}
+
+.usage-box:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-sm);
+}
+
+.usage-label{
+    color:var(--gray-500);
+    font-size:.9rem;
+    margin-bottom:10px;
+}
+
+.usage-value{
+    font-size:1.6rem;
+    font-weight:700;
+    color:var(--gray-900);
+}
+
+/* ===========================
+   About Section
+=========================== */
+
+.info-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--gray-200);
+}
+
+.info-row:last-child{
+    border-bottom:none;
+}
+
+.info-row span{
+    color:var(--gray-500);
+}
+
+.info-row strong{
+    color:var(--gray-900);
+}
+
+/* ===========================
+   Danger Zone
+=========================== */
+
+.danger-card{
+    border:1px solid rgba(220,38,38,.15);
+}
+
+.danger-text{
+    color:var(--danger);
+    margin-bottom:20px;
+}
+
+.danger-buttons{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.danger-buttons .btn{
+    min-width:200px;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:900px){
+
+    .usage-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .password-group{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .password-group button{
+        width:100%;
+    }
+
+    .button-row{
+        margin-top:18px;
+    }
+
+    .button-row .btn{
+        width:100%;
+    }
+
+    .section-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+    }
+
+    .info-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:6px;
+    }
+
+    .danger-buttons{
+        flex-direction:column;
+    }
+
+    .danger-buttons .btn{
+        width:100%;
+        min-width:unset;
+    }
+
+}
