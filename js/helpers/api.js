@@ -5,7 +5,7 @@
 
 const Api = (() => {
 
-    const BASE_URL = "http://127.0.0.1:8000/v1";
+    const BASE_URL = "https://api.zendix.app/v1";
 
     function loop_error_details(error) {
         let error_messages = ""
