@@ -340,12 +340,22 @@
 
             console.error(error);
 
-            Utils.toast(
+            // Utils.toast(
 
-                error.message ||
+            //     error.message ||
+
+            //     "Failed to import backup."
+
+            // );
+
+            Utils.toast(
 
                 "Failed to import backup."
 
+            );
+
+            importBackupModal.classList.remove(
+                "show"
             );
 
         }

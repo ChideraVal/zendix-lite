@@ -22,10 +22,18 @@ const Storage = (() => {
     // ==================================================
 
     const KEYS = {
+
         ACCESS_CODE: "zendix_access_code",
+
         SCHEMAS: "zendix_schemas",
+
         JOBS: "zendix_jobs",
-        SETTINGS: "zendix_settings"
+
+        SETTINGS: "zendix_settings",
+
+        PENDING_PAYMENT_VERIFICATION:
+            "zendix_pending_payment_verification"
+
     };
 
     // ==================================================
@@ -697,6 +705,65 @@ const Storage = (() => {
     }
 
     // ==================================================
+    // Pending Payment Verification
+    // ==================================================
+
+    function getPendingPaymentVerification() {
+
+        return read(
+
+            KEYS.PENDING_PAYMENT_VERIFICATION,
+
+            null
+
+        );
+
+    }
+
+
+    function savePendingPaymentVerification(
+        verification
+    ) {
+
+        write(
+
+            KEYS.PENDING_PAYMENT_VERIFICATION,
+
+            {
+
+                ...clone(verification),
+
+                saved_at: Date.now()
+
+            }
+
+        );
+
+    }
+
+
+    function removePendingPaymentVerification() {
+
+        localStorage.removeItem(
+
+            KEYS.PENDING_PAYMENT_VERIFICATION
+
+        );
+
+    }
+
+
+    function hasPendingPaymentVerification() {
+
+        return (
+
+            getPendingPaymentVerification() !== null
+
+        );
+
+    }
+
+    // ==================================================
     // Settings
     // ==================================================
 
@@ -958,6 +1025,18 @@ const Storage = (() => {
 
         getSettings,
         saveSettings,
+
+        // -----------------------------
+        // Pending Payment Verification
+        // -----------------------------
+
+        getPendingPaymentVerification,
+
+        savePendingPaymentVerification,
+
+        removePendingPaymentVerification,
+
+        hasPendingPaymentVerification,
 
         // -----------------------------
         // Backup

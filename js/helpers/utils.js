@@ -320,6 +320,69 @@ const Utils = (() => {
 
     }
 
+
+    // --------------------------------------------------
+    // Currency Formatting
+    // --------------------------------------------------
+
+    function formatCurrency(amount) {
+
+        return new Intl.NumberFormat(
+
+            "en-NG",
+
+            {
+
+                style: "currency",
+
+                currency: "NGN",
+
+                maximumFractionDigits: 0
+
+            }
+
+        ).format(amount);
+
+    }
+
+    function generateTransactionReference() {
+
+        const random = Math.random()
+            .toString(36)
+            .substring(2, 8)
+            .toUpperCase();
+
+        return `ZL-${Date.now()}-${random}`;
+
+    }
+
+    async function copyText(text) {
+
+        try {
+
+            await navigator.clipboard.writeText(text);
+
+        }
+
+        catch {
+
+            const input =
+                document.createElement("textarea");
+
+            input.value = text;
+
+            document.body.appendChild(input);
+
+            input.select();
+
+            document.execCommand("copy");
+
+            input.remove();
+
+        }
+
+    }
+
     // --------------------------------------------------
     // Public API
     // --------------------------------------------------
@@ -358,7 +421,11 @@ const Utils = (() => {
         getQueryParam,
 
         scrollTop,
-        scrollToElement
+        scrollToElement,
+
+        formatCurrency,
+        generateTransactionReference,
+        copyText
 
     };
 

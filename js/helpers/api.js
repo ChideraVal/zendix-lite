@@ -113,7 +113,7 @@ const Api = (() => {
 
                 headers: accessCode
                     ? {
-                        "Authorization" : `Bearer ${accessCode}`
+                        "Authorization": `Bearer ${accessCode}`
                     }
                     : {},
 
@@ -173,6 +173,35 @@ const Api = (() => {
 
     }
 
+    /* ============================================================
+    VERIFY PAYMENT
+============================================================ */
+
+    async function verifyPayment(data) {
+
+        const response = await request(
+
+            "/payments/verify/",
+
+            {
+
+                method: "POST",
+
+                body: JSON.stringify({
+
+                    transaction_id:
+                        data.transactionId
+
+                })
+
+            }
+
+        );
+
+        return response;
+
+    }
+
     /* --------------------------------------------------------
        Health Check
     -------------------------------------------------------- */
@@ -190,6 +219,8 @@ const Api = (() => {
         getJobStatus,
 
         purchaseAccessCode,
+
+        verifyPayment,
 
         ping
 
