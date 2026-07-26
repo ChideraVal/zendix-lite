@@ -101,7 +101,7 @@
 
             </div>
 
-            <div class="button-row">
+            <div class="danger-buttons">
 
                 <button id="saveAccessCode" class="btn primary-btn">
 
@@ -109,11 +109,68 @@
 
                 </button>
 
+                <a href="purchase.html" class="btn primary-btn">
+
+                    Purchase Access Code
+
+                </a>
+
             </div>
 
             <p class="help-text">
                 Your access code will not be validated until you perform an extraction.
             </p>
+
+        </section>
+
+        <!-- ==========================
+         Access Code
+    =========================== -->
+
+        <section class="card">
+
+            <h2 class="card-title">
+                Email Address
+            </h2>
+
+            <p class="card-description">
+                Enter your email address to purchase access codes on Zendix Lite.
+                The email address is stored only in this browser.
+            </p>
+
+            <div class="form-group">
+
+                <label for="emailAddress">
+                    Email Address
+                </label>
+
+                <div class="password-group">
+
+                    <input id="emailAddress" type="email" autocomplete="email" placeholder="Enter your email address">
+
+                    <!-- <button id="toggleAccessCode" class="btn secondary-btn" type="button">
+
+                        Show
+
+                    </button> -->
+
+                </div>
+
+            </div>
+
+            <div class="danger-buttons">
+
+                <button id="saveEmail" class="btn primary-btn">
+
+                    Save Email Address
+
+                </button>
+
+            </div>
+
+            <!-- <p class="help-text">
+                Your access code will not be validated until you perform an extraction.
+            </p> -->
 
         </section>
 
@@ -265,6 +322,12 @@
 
                 </button>
 
+                <button id="clearEmail" class="btn danger-btn">
+
+                    Clear Email Address
+
+                </button>
+
                 <button id="clearAllData" class="btn danger-btn">
 
                     Clear All Local Data
@@ -328,8 +391,8 @@
             <div class="modal-body">
 
                 <p>
-                    Importing a backup will replace your current access code,
-                    settings, schemas, jobs and uploaded files.
+                    Importing a backup will replace your current access code, email address,
+                    settings, interrupted payment verifications, schemas, jobs and files.
                     This action cannot be undone.
                 </p>
                 

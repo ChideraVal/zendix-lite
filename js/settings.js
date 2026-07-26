@@ -11,10 +11,14 @@
     // =====================================================
 
     const accessCodeInput = document.getElementById("accessCode");
-    const saveButton = document.getElementById("saveAccessCode");
+    const saveAccessCodeButton = document.getElementById("saveAccessCode");
     const toggleButton = document.getElementById("toggleAccessCode");
 
+    const emailInput = document.getElementById("emailAddress");
+    const saveEmailButton = document.getElementById("saveEmail");
+
     const clearAccessCodeButton = document.getElementById("clearAccessCode");
+    const clearEmailButton = document.getElementById("clearEmail");
     const clearAllDataButton = document.getElementById("clearAllData");
 
     const toast = document.getElementById("toast");
@@ -118,7 +122,7 @@
     // Save Access Code
     // =====================================================
 
-    saveButton.addEventListener("click", () => {
+    saveAccessCodeButton.addEventListener("click", () => {
 
         const code = accessCodeInput.value.trim();
 
@@ -151,6 +155,66 @@
     });
 
     // =====================================================
+    // Load Saved Email
+    // =====================================================
+
+    function loadEmail() {
+
+        const email = Storage.getEmail();
+
+        if (email) {
+            emailInput.value = email;
+        }
+
+    }
+
+    // =====================================================
+    // Save Email
+    // =====================================================
+
+    function isValidEmail(email) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    }
+
+    saveEmailButton.addEventListener("click", () => {
+
+        const email = emailInput.value.trim().toLowerCase();
+
+        if (!email) {
+
+            Utils.toast("Email address is required.");
+
+            return;
+
+        }
+
+        if (!isValidEmail(email)) {
+
+            Utils.toast("Please enter a valid email address.");
+
+            return;
+
+        }
+
+        if (email.length > 254) {
+
+            // Utils.toast("Email address is too long.");
+            Utils.toast("Email address must be 254 characters or less.");
+
+            return;
+
+        }
+
+        Storage.setEmail(email);
+
+        showToast("Email address saved.");
+
+    });
+
+
+    // =====================================================
     // Clear Access Code
     // =====================================================
 
@@ -175,6 +239,30 @@
     });
 
     // =====================================================
+    // Clear Email
+    // =====================================================
+
+    clearEmailButton.addEventListener("click", () => {
+
+        showConfirm(
+
+            "Remove the stored email address from this browser?",
+
+            () => {
+
+                Storage.removeEmail();
+
+                emailInput.value = "";
+
+                showToast("Email address removed.");
+
+            }
+
+        );
+
+    });
+
+    // =====================================================
     // Clear All Local Data
     // =====================================================
 
@@ -182,15 +270,18 @@
 
         showConfirm(
 
-            "This will permanently delete all locally stored jobs, schemas, filters, settings and access code. Continue?",
+            "This will permanently delete all locally stored jobs, files, schemas, interrupted payment verifications, settings, email address and access code. Continue?",
 
             () => {
 
                 Storage.removeAccessCode();
+                Storage.removeEmail();
+                Storage.clearPendingVerifications();
                 Storage.clearJobs();
                 Storage.clearSchemas();
 
                 accessCodeInput.value = "";
+                emailInput.value = "";
 
                 showToast("All local data cleared.");
 
@@ -375,5 +466,6 @@
     // =====================================================
 
     loadAccessCode();
+    loadEmail();
 
 })();

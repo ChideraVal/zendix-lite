@@ -290,7 +290,7 @@
     text-align: center;
 }
 
-.spinner {
+/* .spinner {
     width: 56px;
     height: 56px;
 
@@ -301,7 +301,7 @@
     border-radius: 50%;
 
     animation: spin .8s linear infinite;
-}
+} */
 
 .modal-icon {
     font-size: 58px;
@@ -365,13 +365,13 @@
     display: none !important;
 }
 
-@keyframes spin {
+/* @keyframes spin {
 
     to {
         transform: rotate(360deg);
     }
 
-}
+} */
 
 
 /* =========================================================

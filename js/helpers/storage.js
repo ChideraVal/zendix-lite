@@ -25,14 +25,15 @@ const Storage = (() => {
 
         ACCESS_CODE: "zendix_access_code",
 
+        EMAIL: "zendix_email",
+
         SCHEMAS: "zendix_schemas",
 
         JOBS: "zendix_jobs",
 
         SETTINGS: "zendix_settings",
 
-        PENDING_PAYMENT_VERIFICATION:
-            "zendix_pending_payment_verification"
+        PENDING_VERIFICATIONS: "zendix_pending_verifications"
 
     };
 
@@ -428,6 +429,22 @@ const Storage = (() => {
     }
 
     // ==================================================
+    // Email Address
+    // ==================================================
+
+    function getEmail() {
+        return localStorage.getItem(KEYS.EMAIL);
+    }
+
+    function setEmail(email) {
+        localStorage.setItem(KEYS.EMAIL, email);
+    }
+
+    function removeEmail() {
+        localStorage.removeItem(KEYS.EMAIL);
+    }
+
+    // ==================================================
     // Schemas
     // ==================================================
 
@@ -705,59 +722,117 @@ const Storage = (() => {
     }
 
     // ==================================================
-    // Pending Payment Verification
+    // Pending Payment Verifications
     // ==================================================
 
-    function getPendingPaymentVerification() {
+    function getPendingVerifications() {
 
         return read(
-
-            KEYS.PENDING_PAYMENT_VERIFICATION,
-
-            null
-
+            KEYS.PENDING_VERIFICATIONS,
+            []
         );
 
     }
 
 
-    function savePendingPaymentVerification(
-        verification
-    ) {
+    function getPendingVerification(txRef) {
+
+        return getPendingVerifications().find(
+
+            verification => verification.tx_ref === txRef
+
+        ) || null;
+
+    }
+
+    function addPendingVerification(verification) {
+
+        const verifications =
+            getPendingVerifications();
+
+        // Prevent duplicates
+        const existingIndex =
+            verifications.findIndex(
+
+                item => item.tx_ref === verification.tx_ref
+
+            );
+
+        if (existingIndex !== -1) {
+
+            verifications[existingIndex] = {
+
+                ...verifications[existingIndex],
+
+                ...clone(verification)
+
+            };
+
+        }
+
+        else {
+
+            verifications.push(
+
+                clone(verification)
+
+            );
+
+        }
 
         write(
 
-            KEYS.PENDING_PAYMENT_VERIFICATION,
+            KEYS.PENDING_VERIFICATIONS,
 
-            {
-
-                ...clone(verification),
-
-                saved_at: Date.now()
-
-            }
+            verifications
 
         );
 
     }
 
 
-    function removePendingPaymentVerification() {
+    function removePendingVerification(txRef) {
 
-        localStorage.removeItem(
+        write(
 
-            KEYS.PENDING_PAYMENT_VERIFICATION
+            KEYS.PENDING_VERIFICATIONS,
+
+            getPendingVerifications().filter(
+
+                verification => verification.tx_ref !== txRef
+
+            )
 
         );
 
     }
 
 
-    function hasPendingPaymentVerification() {
+    function clearPendingVerifications() {
 
-        return (
+        write(
 
-            getPendingPaymentVerification() !== null
+            KEYS.PENDING_VERIFICATIONS,
+
+            []
+
+        );
+
+    }
+
+
+    function hasPendingVerifications() {
+
+        return getPendingVerifications().length > 0;
+
+    }
+
+
+    function pendingVerificationExists(txRef) {
+
+        return getPendingVerifications().some(
+
+            verification => verification.tx_ref === txRef
 
         );
 
@@ -844,6 +919,10 @@ const Storage = (() => {
 
             access_code: getAccessCode(),
 
+            email: getEmail(),
+
+            pending_verifications: getPendingVerifications(),
+
             settings: getSettings(),
 
             schemas: getSchemas(),
@@ -868,6 +947,10 @@ const Storage = (() => {
 
         if (backup.version !== 1) {
             throw new Error("Unsupported backup version.");
+        }
+
+        if (!Array.isArray(backup.pending_verifications)) {
+            throw new Error("Backup is missing pending verifications.");
         }
 
         if (!Array.isArray(backup.schemas)) {
@@ -912,6 +995,10 @@ const Storage = (() => {
 
         removeAccessCode();
 
+        removeEmail();
+
+        clearPendingVerifications();
+
         clearSchemas();
 
         write(KEYS.JOBS, []);
@@ -948,8 +1035,17 @@ const Storage = (() => {
             setAccessCode(backup.access_code);
         }
 
+        if (backup.email) {
+            setEmail(backup.email);
+        }
+
         saveSettings(
             backup.settings || {}
+        );
+
+        write(
+            KEYS.PENDING_VERIFICATIONS,
+            backup.pending_verifications
         );
 
         write(
@@ -979,6 +1075,14 @@ const Storage = (() => {
         getAccessCode,
         setAccessCode,
         removeAccessCode,
+
+        // -----------------------------
+        // Email Address
+        // -----------------------------
+
+        getEmail,
+        setEmail,
+        removeEmail,
 
         // -----------------------------
         // Schemas
@@ -1027,16 +1131,16 @@ const Storage = (() => {
         saveSettings,
 
         // -----------------------------
-        // Pending Payment Verification
+        // Pending Payment Verifications
         // -----------------------------
 
-        getPendingPaymentVerification,
-
-        savePendingPaymentVerification,
-
-        removePendingPaymentVerification,
-
-        hasPendingPaymentVerification,
+        getPendingVerifications,
+        getPendingVerification,
+        addPendingVerification,
+        removePendingVerification,
+        clearPendingVerifications,
+        hasPendingVerifications,
+        pendingVerificationExists,
 
         // -----------------------------
         // Backup

@@ -5,7 +5,8 @@
 
 const Api = (() => {
 
-    const BASE_URL = "https://api.zendix.app/v1";
+    // const BASE_URL = "https://api.zendix.app/v1";
+    const BASE_URL = " http://127.0.0.1:8000/v1";
 
     function loop_error_details(error) {
         let error_messages = ""
@@ -48,6 +49,8 @@ const Api = (() => {
         catch {
             data = {};
         }
+
+        // console.log(response);
 
         if (!response.ok) {
 
@@ -179,13 +182,17 @@ const Api = (() => {
 
     async function verifyPayment(data) {
 
-        const response = await request(
+        return request(
 
             "/payments/verify/",
 
             {
 
                 method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
                 body: JSON.stringify({
 
@@ -198,7 +205,7 @@ const Api = (() => {
 
         );
 
-        return response;
+        // return response;
 
     }
 

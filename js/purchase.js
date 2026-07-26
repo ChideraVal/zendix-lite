@@ -21,7 +21,7 @@ const modalMessage =
     document.getElementById("modalMessage");
 
 const modalActions =
-    document.getElementById("modalActions");
+    document.getElementById("modal-actions");
 
 const primaryModalButton =
     document.getElementById("primaryModalButton");
@@ -142,7 +142,8 @@ const PLANS = [
 
 ];
 
-const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-a5854115010173e1d82d95e24cb9741d-X"
+// const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-a5854115010173e1d82d95e24cb9741d-X"
+const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-c3adb57392cdc89f81cd6b12959f7141-X"
 
 const CURRENCY = "NGN";
 
@@ -165,8 +166,21 @@ function bindEvents() {
     // );
 
     verifyPaymentBtn.addEventListener(
-        "click",
-        verifyPendingPayment
+        "click", function () {
+
+            if (!pendingVerification) {
+                return;
+            }
+
+            hideVerificationBlockedModal();
+
+            startSession();
+
+            showProcessingModal();
+
+            verifyPendingPayment();
+
+        }
     );
 
     closeBlockedModalBtn.addEventListener(
@@ -282,51 +296,83 @@ function renderPlans() {
 
         card.innerHTML = `
 
-            ${plan.featured ? `
-                <div class="plan-badge">
+    ${plan.featured ? `
+        <div class="plan-badge">
 
-                    Most Popular
+            ⭐ Most Popular
 
-                </div>
-            ` : ""}
+        </div>
+    ` : ""}
 
-            <div class="plan-pages">
+    <div class="plan-header">
 
-                ${plan.pages.toLocaleString()}
+        <div class="plan-pages">
 
-                <span>
+            ${plan.pages.toLocaleString()}
 
-                    Pages
+        </div>
 
-                </span>
+        <div class="plan-pages-label">
 
-            </div>
+            Pages
 
-            <div class="plan-price">
+        </div>
 
-                ${Utils.formatCurrency(
-            plan.amount
-        )}
+    </div>
 
-            </div>
+    <div class="plan-price">
 
-            <div class="plan-rate">
+        ${Utils.formatCurrency(plan.amount)}
 
-                ${Utils.formatCurrency(
+    </div>
+
+    <div class="plan-rate">
+
+        ${Utils.formatCurrency(
             plan.amount / plan.pages
         )} per page
 
-            </div>
+    </div>
 
-            <button
-                class="button buy-plan-btn"
-                data-plan-id="${plan.id}">
+    <div class="plan-divider"></div>
 
-                Buy Now
+    <div class="plan-features">
 
-            </button>
+        <div class="plan-feature">
 
-        `;
+            <span class="feature-icon">✓</span>
+
+            Instant activation
+
+        </div>
+
+        <div class="plan-feature">
+
+            <span class="feature-icon">✓</span>
+
+            Credits never expire
+
+        </div>
+
+        <div class="plan-feature">
+
+            <span class="feature-icon">✓</span>
+
+            Secure Flutterwave payment
+
+        </div>
+
+    </div>
+
+    <button
+        class="button buy-plan-btn primary-btn"
+        data-plan-id="${plan.id}">
+
+        Buy Now
+
+    </button>
+
+`;
 
         pricingGrid.appendChild(card);
 
@@ -465,20 +511,194 @@ function restartSession() {
     PAYMENT
 ============================================================ */
 
-function loadPendingVerification() {
+function renderPendingVerifications() {
 
-    pendingVerification =
-        Storage.getPendingPaymentVerification();
+    const container =
+        document.getElementById(
+            "pendingVerifications"
+        );
 
-    if (pendingVerification) {
+    const verifications =
+        Storage.getPendingVerifications();
 
-        showPendingVerificationNotice();
+    if (verifications.length === 0) {
+
+        container.classList.add("hidden");
+
+        container.innerHTML = "";
+
+        return;
 
     }
+
+    container.classList.remove("hidden");
+
+    container.innerHTML = `
+
+    <div class="pending-header">
+
+        <h2>
+
+            Interrupted Payment Verifications
+
+        </h2>
+
+        <p>
+
+            These payments were completed, but their verification was interrupted before
+            the result could be shown. Verify them to retrieve your access code.
+
+        </p>
+
+    </div>
+
+    <div class="pending-grid">
+
+        ${verifications.map(verification => `
+
+            <div class="pending-card">
+
+                <div class="pending-badge">
+
+                    Interrupted
+
+                </div>
+
+                <div class="pending-main">
+
+                    <div class="pending-pages">
+
+                        ${verification.pages.toLocaleString()} Pages
+
+                    </div>
+
+                    <div class="pending-amount">
+
+                        ${Utils.formatCurrency(verification.amount)}
+
+                    </div>
+
+                </div>
+
+                <div class="pending-meta">
+
+                    <div>
+
+                        <strong>Reference</strong>
+
+                        <span>${verification.tx_ref}</span>
+
+                    </div>
+
+                    <div>
+
+                        <strong>Date</strong>
+
+                        <span>
+
+                            ${verification.created_at
+            ? Utils.formatDate(
+                verification.created_at
+            )
+            : "Unknown"
+        }
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <button
+
+                    class="button verify-payment primary-btn"
+
+                    data-txref="${verification.tx_ref}">
+
+                    Verify Payment
+
+                </button>
+
+            </div>
+
+        `).join("")}
+
+    </div>
+
+`;
+
+    container
+
+        .querySelectorAll(".verify-payment")
+
+        .forEach(button => {
+
+            button.addEventListener(
+
+                "click",
+
+                () => verifyPendingVerification(
+
+                    button.dataset.txref
+
+                )
+
+            );
+
+        });
+
+}
+
+async function verifyPendingVerification(txRef) {
+
+    const verification =
+
+        Storage.getPendingVerification(
+            txRef
+        );
+
+    if (!verification) {
+
+        Utils.toast(
+            // "Verification no longer exists."
+            "Payment data not found."
+        );
+
+        renderPendingVerifications();
+
+        return;
+
+    }
+
+    pendingVerification = verification;
+
+    hideVerificationBlockedModal();
+
+    startSession();
+
+    showProcessingModal();
+
+    await verifyPendingPayment();
+
+}
+
+function refreshPendingVerifications() {
+
+    renderPendingVerifications();
 
 }
 
 function startPayment() {
+
+    const email = Storage.getEmail();
+
+    if (!email) {
+
+        showEmailRequiredModal();
+
+        return;
+
+    }
 
     if (!selectedPlan) {
 
@@ -498,7 +718,6 @@ function startPayment() {
 
 function openFlutterwaveCheckout() {
     console.log("Making payment...");
-    console.log(selectedPlan);
 
     FlutterwaveCheckout({
 
@@ -510,15 +729,14 @@ function openFlutterwaveCheckout() {
 
         currency: CURRENCY,
 
-        // payment_options:
-        //     "card,banktransfer,ussd",
-        payment_options: "card, ussd, banktransfer, account, internetbanking, nqr, applepay, googlepay, enaira, opay",
+        payment_options:
+            "card,banktransfer,ussd",
 
         customer: {
 
-            email: "",
+            email: Storage.getEmail(),
 
-            name: ""
+            name: "Zendix User"
 
         },
 
@@ -538,6 +756,8 @@ function openFlutterwaveCheckout() {
 
     });
 
+
+
 }
 
 async function handlePaymentCallback(payment) {
@@ -546,17 +766,19 @@ async function handlePaymentCallback(payment) {
 
         transactionId: payment.transaction_id,
 
-        txRef: payment.tx_ref,
+        tx_ref: payment.tx_ref,
 
         amount: selectedPlan.amount,
 
         pages: selectedPlan.pages,
 
-        planId: selectedPlan.id
+        planId: selectedPlan.id,
+
+        created_at: new Date().toISOString()
 
     };
 
-    Storage.savePendingPaymentVerification(
+    Storage.addPendingVerification(
         pendingVerification
     );
 
@@ -567,8 +789,9 @@ async function handlePaymentCallback(payment) {
 }
 
 function handlePaymentClose() {
+    console.log("CLOSING MODAL...")
 
-    if (paymentCompleted) {
+    if (verifyingPayment) {
         return;
     }
 
@@ -577,6 +800,10 @@ function handlePaymentClose() {
 }
 
 async function verifyPendingPayment() {
+
+    console.log("VERIFYING PAYMENT...")
+
+    disableBuyButtons();
 
     if (!pendingVerification) {
         return;
@@ -593,13 +820,17 @@ async function verifyPendingPayment() {
 
             );
 
+        console.log(response);
         // Save access code if payment succeeded.
 
-        
 
         // Now verification is complete.
 
-        Storage.removePendingPaymentVerification();
+        Storage.removePendingVerification(
+            pendingVerification.tx_ref
+        );
+
+        refreshPendingVerifications();
 
         pendingVerification = null;
 
@@ -625,6 +856,8 @@ async function verifyPendingPayment() {
 
         stopSession();
 
+        enableBuyButtons();
+
     }
 
 }
@@ -641,7 +874,7 @@ function showProcessingModal() {
 
     modalIcon.classList.add("hidden");
 
-    modalActions.classList.add("hidden");
+    // modalActions.classList.add("hidden");
 
     modalTitle.textContent =
         "Verifying Payment";
@@ -706,6 +939,8 @@ function showVerificationResultModal(
 
     if (success) {
 
+        Storage.setAccessCode(response.access_code);
+
         verificationStatusIcon.textContent =
             "✓";
 
@@ -713,13 +948,14 @@ function showVerificationResultModal(
             "Payment Successful";
 
         verificationStatusMessage.textContent =
-            `Your access code has been generated with ${formatPages(response.pages)}.`;
+            `Your access code has been generated with ${formatPages(response.pages)}.
+            Your access code has been saved to this browser and is ready to use. You may also copy it for use on another browser or device.`;
 
         accessCodeContainer.classList.remove(
             "hidden"
         );
 
-        accessCode.value =
+        accessCode.textContent =
             response.access_code;
 
     }
@@ -754,18 +990,50 @@ function hideVerificationResultModal() {
 
 }
 
+function showEmailRequiredModal() {
+
+    document
+        .getElementById(
+            "emailRequiredModal"
+        )
+        .classList.add("show");
+
+}
+
+function hideEmailRequiredModal() {
+
+    document
+        .getElementById(
+            "emailRequiredModal"
+        )
+        .classList.remove("show");
+
+}
+
+document
+    .getElementById("cancelEmailModalBtn")
+    .addEventListener("click", hideEmailRequiredModal);
+
+document
+    .getElementById("settingsEmailModalBtn")
+    .addEventListener("click", () => {
+
+        location.href = "settings.html";
+
+    });
+
 /* ============================================================
     HELPERS
 ============================================================ */
 
 async function copyAccessCode() {
 
-    if (!accessCode.value) {
+    if (!accessCode.textContent) {
         return;
     }
 
     await Utils.copyText(
-        accessCode.value
+        accessCode.textContent
     );
 
     Utils.toast(
@@ -802,6 +1070,80 @@ function formatPages(pages) {
 }
 
 
+function updateEmailRequirement() {
+
+    const banner =
+        document.getElementById(
+            "emailRequiredBanner"
+        );
+
+    const title =
+        document.getElementById(
+            "emailStatusTitle"
+        );
+
+    const message =
+        document.getElementById(
+            "emailStatusMessage"
+        );
+
+    const icon =
+        banner.querySelector(
+            ".email-status-icon"
+        );
+
+    const email =
+        Storage.getEmail();
+
+    banner.classList.remove(
+        "email-warning",
+        "email-success"
+    );
+
+    banner.classList.remove("hidden");
+
+    if (email) {
+
+        banner.classList.add(
+            "email-success"
+        );
+
+        icon.textContent = "✓";
+
+        title.textContent =
+            "Purchasing As";
+
+        message.textContent =
+            email;
+
+    }
+
+    else {
+
+        banner.classList.add(
+            "email-warning"
+        );
+
+        icon.textContent = "✉️";
+
+        title.textContent =
+            "Email Required";
+
+        message.textContent =
+            "Add your email address before purchasing an access code.";
+
+    }
+
+}
+
+document
+    .getElementById("goToSettingsBtn")
+    .addEventListener("click", () => {
+
+        location.href = "settings.html";
+
+    });
+
 /* ============================================================
     INITIALIZE
 ============================================================ */
@@ -812,8 +1154,10 @@ function initialize() {
 
     renderPlans();
 
-    bindEvents();
+    renderPendingVerifications();
 
-    loadPendingVerification();
+    updateEmailRequirement();
+
+    bindEvents();
 
 }
