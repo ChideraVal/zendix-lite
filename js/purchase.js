@@ -21,7 +21,7 @@ const modalMessage =
     document.getElementById("modalMessage");
 
 const modalActions =
-    document.getElementById("modal-actions");
+    document.getElementById("modalActions");
 
 const primaryModalButton =
     document.getElementById("primaryModalButton");
@@ -38,6 +38,12 @@ const verifyPaymentBtn =
 
 const closeBlockedModalBtn =
     document.getElementById("closeBlockedModalBtn");
+
+const verifyPendingPaymentBtn =
+    document.getElementById("verifyPendingPaymentBtn");
+
+const closeVerificationCompleteModalBtn =
+    document.getElementById("closeVerificationCompleteModalBtn");
 
 
 const verificationCompleteModal =
@@ -142,8 +148,9 @@ const PLANS = [
 
 ];
 
-// const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-a5854115010173e1d82d95e24cb9741d-X"
-const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-c3adb57392cdc89f81cd6b12959f7141-X"
+// const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-c3adb57392cdc89f81cd6b12959f7141-X"
+const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-766caaef810d70163be3a8d8e5bb2c87-X"
+
 
 const CURRENCY = "NGN";
 
@@ -183,6 +190,24 @@ function bindEvents() {
         }
     );
 
+    verifyPendingPaymentBtn.addEventListener(
+        "click", function () {
+
+            if (!pendingVerification) {
+                return;
+            }
+
+            hideVerificationResultModal();
+
+            startSession();
+
+            showProcessingModal();
+
+            verifyPendingPayment();
+
+        }
+    );
+
     closeBlockedModalBtn.addEventListener(
         "click",
         () => {
@@ -195,6 +220,17 @@ function bindEvents() {
     );
 
     verificationDoneBtn.addEventListener(
+        "click",
+        () => {
+
+            verificationCompleteModal
+                .classList
+                .remove("show");
+
+        }
+    );
+
+    closeVerificationCompleteModalBtn.addEventListener(
         "click",
         () => {
 
@@ -358,7 +394,7 @@ function renderPlans() {
 
             <span class="feature-icon">✓</span>
 
-            Secure Flutterwave payment
+            Secure payment
 
         </div>
 
@@ -750,6 +786,14 @@ function openFlutterwaveCheckout() {
 
         },
 
+        meta: {
+
+            product: "zendix_lite",
+
+            plan: selectedPlan.id
+
+        },
+
         callback: handlePaymentCallback,
 
         onclose: handlePaymentClose
@@ -820,19 +864,19 @@ async function verifyPendingPayment() {
 
             );
 
-        console.log(response);
+        console.log("RESPONSE = ", response);
         // Save access code if payment succeeded.
 
 
         // Now verification is complete.
 
-        Storage.removePendingVerification(
-            pendingVerification.tx_ref
-        );
+        // Storage.removePendingVerification(
+        //     pendingVerification.tx_ref
+        // );
 
-        refreshPendingVerifications();
+        // refreshPendingVerifications();
 
-        pendingVerification = null;
+        // pendingVerification = null;
 
         showVerificationResultModal(response);
 
@@ -933,11 +977,16 @@ function showVerificationResultModal(
         .classList
         .add("show");
 
-    const success =
-        response.payment_status ===
-        "successful";
+    // pendingVerification = null;
+    console.log("pendingVerification = ", pendingVerification);
 
-    if (success) {
+    // const success =
+    //     response.payment_status ===
+    //     "successful";
+
+    const paymentStatus = response.payment_status;
+
+    if (paymentStatus === "successful") {
 
         Storage.setAccessCode(response.access_code);
 
@@ -948,8 +997,7 @@ function showVerificationResultModal(
             "Payment Successful";
 
         verificationStatusMessage.textContent =
-            `Your access code has been generated with ${formatPages(response.pages)}.
-            Your access code has been saved to this browser and is ready to use. You may also copy it for use on another browser or device.`;
+            response.message || "Your payment was successful."
 
         accessCodeContainer.classList.remove(
             "hidden"
@@ -958,9 +1006,17 @@ function showVerificationResultModal(
         accessCode.textContent =
             response.access_code;
 
+        Storage.removePendingVerification(
+            pendingVerification.tx_ref
+        );
+
+        refreshPendingVerifications();
+        
+        pendingVerification = null;
+
     }
 
-    else {
+    else if (paymentStatus === "failed") {
 
         verificationStatusIcon.textContent =
             "✕";
@@ -970,15 +1026,73 @@ function showVerificationResultModal(
 
         verificationStatusMessage.textContent =
             response.message ||
-            "Your payment was not successful.";
+            "Your payment was unsuccessful.";
 
         accessCodeContainer.classList.add(
             "hidden"
         );
 
-        accessCode.value = "";
+        accessCode.textContent = "";
+
+        Storage.removePendingVerification(
+            pendingVerification.tx_ref
+        );
+
+        refreshPendingVerifications();
+
+        pendingVerification = null;
 
     }
+
+    else if (paymentStatus === "pending") {
+
+        verificationStatusIcon.textContent =
+            "...";
+
+        verificationStatusTitle.textContent =
+            "Payment Pending";
+
+        verificationStatusMessage.textContent =
+            response.message ||
+            "Your payment is still being verified.";
+
+        accessCodeContainer.classList.add(
+            "hidden"
+        );
+
+        accessCode.textContent = "";
+
+        verificationDoneBtn.classList.add("hidden");
+
+        modalActions.classList.remove("hidden");
+
+    }
+
+    else {
+
+        verificationStatusIcon.textContent =
+            "...";
+
+        verificationStatusTitle.textContent =
+            "Payment Pending";
+
+        verificationStatusMessage.textContent =
+            response.message ||
+            "Your payment is still being verified.";
+
+        accessCodeContainer.classList.add(
+            "hidden"
+        );
+
+        accessCode.textContent = "";
+
+        verificationDoneBtn.classList.add("hidden");
+
+        modalActions.classList.remove("hidden");
+
+    }
+
+    console.log("pendingVerification = ", pendingVerification);
 
 }
 

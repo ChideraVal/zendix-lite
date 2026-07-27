@@ -29,7 +29,8 @@
                 ||
 
                 (page === "settings" &&
-                    currentPage.includes("setting"))
+                    (currentPage.includes("setting")
+                    || currentPage.includes("purchase")))
             ) {
 
                 link.classList.add("active");

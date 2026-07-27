@@ -5,8 +5,8 @@
 
 const Api = (() => {
 
-    // const BASE_URL = "https://api.zendix.app/v1";
-    const BASE_URL = " http://127.0.0.1:8000/v1";
+    const BASE_URL = "https://api.zendix.app/v1";
+    // const BASE_URL = " http://127.0.0.1:8000/v1";
 
     function loop_error_details(error) {
         let error_messages = ""
@@ -56,7 +56,7 @@ const Api = (() => {
 
             const error = new Error(
                 // data.error.message || "Request failed"
-                data.error.details ? data.error.details : data.error.message ? data.error.message.replace("API key", "access code") : "Request failed"
+                data.error.details ? loop_error_details(data.error.details) : data.error.message ? data.error.message.replace("API key", "access code") : "Request failed"
             );
 
             error.status = response.status;
@@ -196,8 +196,9 @@ const Api = (() => {
 
                 body: JSON.stringify({
 
-                    transaction_id:
-                        data.transactionId
+                    transaction_id: data.transactionId,
+
+                    plan: data.planId
 
                 })
 

@@ -87,6 +87,9 @@ function showToast(message) {
    ========================================================== */
 
 function updateApproveButton() {
+    const color = job.approved ? "red" : "#16A34A";
+    approveBtn.style.background = color;
+
     if (job.approved) {
         approveBtn.textContent = "Unapprove";
         approveBtn.classList.remove("primary");
@@ -146,12 +149,20 @@ function renderJobDetails() {
 
         <div class="detail-row">
             <span class="detail-label">Status</span>
-            <span class="detail-value">${job.data.status || "-"}</span>
+            <span class="detail-value">
+                <span class="status-badge ${job.data.status === "successful" ? "success" : "failed"}">
+                ${job.data.status || "-"}
+                </span>
+            </span>
         </div>
 
         <div class="detail-row">
             <span class="detail-label">Approved</span>
-            <span class="detail-value">${job.approved ? "Yes" : "No"}</span>
+            <span class="detail-value">
+                <span class="status-badge ${job.approved ? "badge-approved" : "badge-unapproved"}">
+                ${job.approved ? "Yes" : "No"}
+                </span>
+            </span>
         </div>
 
         <div class="detail-row">
@@ -1764,6 +1775,10 @@ loadReviewPage();
                 : "Approval removed.",
             approved
         );
+
+        const color = approved ? "red" : "#16A34A";
+
+        approveBtn.style.background = color;
 
         // job.approved = approved;
 
