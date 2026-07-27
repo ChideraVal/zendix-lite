@@ -105,6 +105,13 @@ let verifyingPayment = false;
 const PLANS = [
 
     {
+        id: "plan_50",
+        pages: 50,
+        amount: 10,
+        featured: false
+    },
+
+    {
         id: "plan_10",
         pages: 10,
         amount: 500,
