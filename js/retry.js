@@ -378,6 +378,8 @@ let inactivityTimer = null;
 startSession();
 
 function startSession() {
+    console.log("starting session...")
+    return;
 
     warmUpServer();
 
@@ -397,6 +399,8 @@ function startSession() {
 ============================================================ */
 
 function stopSession() {
+    console.log("stopping session...")
+    return;
 
     clearInterval(keepAliveTimer);
 
@@ -444,6 +448,8 @@ async function warmUpServer() {
 
 
 function resetInactivityTimer() {
+    console.log("resetting session...")
+    return;
 
     clearTimeout(inactivityTimer);
 

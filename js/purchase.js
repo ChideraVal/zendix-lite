@@ -421,11 +421,8 @@ function renderPlans() {
     SESSION MANAGEMENT
 ============================================================ */
 
-const KEEP_ALIVE_INTERVAL =
-    10 * 60 * 1000;
-
-const INACTIVITY_TIMEOUT =
-    60 * 60 * 1000;
+const KEEP_ALIVE_INTERVAL = 10 * 60 * 1000;
+const INACTIVITY_TIMEOUT = 60 * 60 * 1000;
 
 let keepAliveTimer = null;
 
@@ -439,6 +436,8 @@ let inactivityTimer = null;
 startSession();
 
 function startSession() {
+    console.log("starting session...")
+    return;
 
     stopSession();
 
@@ -460,6 +459,8 @@ function startSession() {
 ============================================================ */
 
 function stopSession() {
+    console.log("stopping session...")
+    return;
 
     clearInterval(keepAliveTimer);
 
@@ -510,6 +511,8 @@ async function warmUpServer() {
 
 
 function resetInactivityTimer() {
+    console.log("resetting session...")
+    return;
 
     clearTimeout(inactivityTimer);
 
