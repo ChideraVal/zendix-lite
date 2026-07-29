@@ -298,6 +298,8 @@
 
                 showToast("Access code removed.");
 
+                loadUsageData();
+
             }
 
         );
@@ -350,6 +352,8 @@
                 emailInput.value = "";
 
                 showToast("All local data cleared.");
+
+                loadUsageData();
 
             }
 
