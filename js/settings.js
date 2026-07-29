@@ -3,7 +3,7 @@
    settings.js
    ========================================================== */
 
-(function () {
+(async function () {
     "use strict";
 
     // =====================================================
@@ -20,6 +20,8 @@
     const clearAccessCodeButton = document.getElementById("clearAccessCode");
     const clearEmailButton = document.getElementById("clearEmail");
     const clearAllDataButton = document.getElementById("clearAllData");
+
+    const usageGrid = document.getElementById("usageGrid");
 
     const toast = document.getElementById("toast");
 
@@ -116,6 +118,68 @@
             accessCodeInput.value = code;
         }
 
+        loadUsageData();
+
+    }
+
+    async function loadUsageData() {
+
+        usageGrid.style.display = "flex";
+        
+        usageGrid.innerHTML = "<p class='small'>Loading usage data...</p>";
+
+        try {
+
+            usageGrid.style.display = "grid";
+
+            const response = await Api.getUsage();
+
+            usageGrid.innerHTML = `
+                <div class="usage-box">
+
+                    <div class="usage-label">
+                        Pages Available
+                    </div>
+
+                    <div class="usage-value">
+                        ${response.pages_available}
+                    </div>
+
+                </div>
+
+                <div class="usage-box">
+
+                    <div class="usage-label">
+                        Pages Used
+                    </div>
+
+                    <div class="usage-value">
+                        ${response.pages_used}
+                    </div>
+
+                </div>
+
+                <div class="usage-box">
+
+                    <div class="usage-label">
+                        Pages Purchased
+                    </div>
+
+                    <div class="usage-value">
+                        ${response.pages_purchased}
+                    </div>
+
+                </div>
+            `
+
+        } catch(error) {
+
+            usageGrid.style.display = "flex";
+
+            usageGrid.innerHTML =  `<p class='small'>${error.message || "Failed to load usage data."}</p>`;
+
+        }
+
     }
 
     // =====================================================
@@ -129,6 +193,8 @@
         Storage.setAccessCode(code);
 
         showToast("Access code saved.");
+
+        loadUsageData();
 
     });
 
@@ -266,18 +332,18 @@
     // Clear All Local Data
     // =====================================================
 
-    clearAllDataButton.addEventListener("click", () => {
+    clearAllDataButton.addEventListener("click", async () => {
 
         showConfirm(
 
             "This will permanently delete all locally stored jobs, files, schemas, interrupted payment verifications, settings, email address and access code. Continue?",
 
-            () => {
+            async () => {
 
                 Storage.removeAccessCode();
                 Storage.removeEmail();
                 Storage.clearPendingVerifications();
-                Storage.clearJobs();
+                await Storage.clearJobs();
                 Storage.clearSchemas();
 
                 accessCodeInput.value = "";

@@ -2,9 +2,6 @@
     DOM
 ============================================================ */
 
-const currencyTabs =
-    document.querySelectorAll(".currency-tab");
-
 const pricingGrid =
     document.getElementById("pricingGrid");
 
@@ -107,119 +104,55 @@ let verifyingPayment = false;
 
 const PLANS = [
 
-    // --------------------
-    // NGN
-    // --------------------
-
     {
-        id: "plan_10_ngn",
+        id: "plan_10",
         pages: 10,
         amount: 500,
-        currency: "NGN",
         featured: false
     },
 
     {
-        id: "plan_100_ngn",
+        id: "plan_100",
         pages: 100,
         amount: 5000,
-        currency: "NGN",
         featured: false
     },
 
     {
-        id: "plan_500_ngn",
+        id: "plan_500",
         pages: 500,
         amount: 25000,
-        currency: "NGN",
         featured: true
     },
 
     {
-        id: "plan_1000_ngn",
+        id: "plan_1000",
         pages: 1000,
         amount: 50000,
-        currency: "NGN",
         featured: false
     },
 
     {
-        id: "plan_2500_ngn",
+        id: "plan_2500",
         pages: 2500,
         amount: 125000,
-        currency: "NGN",
         featured: false
     },
 
     {
-        id: "plan_5000_ngn",
+        id: "plan_5000",
         pages: 5000,
         amount: 250000,
-        currency: "NGN",
-        featured: false
-    },
-
-    // --------------------
-    // USD
-    // --------------------
-
-    {
-        id: "plan_10_usd",
-        pages: 10,
-        amount: 1,
-        currency: "USD",
-        featured: false
-    },
-
-    {
-        id: "plan_100_usd",
-        pages: 100,
-        amount: 10,
-        currency: "USD",
-        featured: false
-    },
-
-    {
-        id: "plan_500_usd",
-        pages: 500,
-        amount: 50,
-        currency: "USD",
-        featured: true
-    },
-
-    {
-        id: "plan_1000_usd",
-        pages: 1000,
-        amount: 100,
-        currency: "USD",
-        featured: false
-    },
-
-    {
-        id: "plan_2500_usd",
-        pages: 2500,
-        amount: 250,
-        currency: "USD",
-        featured: false
-    },
-
-    {
-        id: "plan_5000_usd",
-        pages: 5000,
-        amount: 500,
-        currency: "USD",
         featured: false
     }
 
 ];
 
-const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-c3adb57392cdc89f81cd6b12959f7141-X"
-// const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-766caaef810d70163be3a8d8e5bb2c87-X"
+// const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-c3adb57392cdc89f81cd6b12959f7141-X"
+const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-766caaef810d70163be3a8d8e5bb2c87-X"
 
 
-// const CURRENCY = "NGN";
-let selectedCurrency =
-    localStorage.getItem("purchase_currency") || "NGN";
+const CURRENCY = "NGN";
 
 const PAYMENT_TITLE =
     "Zendix Lite";
@@ -354,19 +287,6 @@ function enableBuyButtons() {
     PLAN SELECTION
 ============================================================ */
 
-function updateCurrencyTabs() {
-
-    currencyTabs.forEach(tab => {
-
-        tab.classList.toggle(
-            "active",
-            tab.dataset.currency === selectedCurrency
-        );
-
-    });
-
-}
-
 function handlePricingGridClick(event) {
 
     const button = event.target.closest(
@@ -393,24 +313,6 @@ function handlePricingGridClick(event) {
 
 }
 
-currencyTabs.forEach(tab => {
-
-    tab.addEventListener("click", () => {
-
-        selectedCurrency = tab.dataset.currency;
-
-        localStorage.setItem(
-            "purchase_currency",
-            selectedCurrency
-        );
-
-        updateCurrencyTabs();
-
-        renderPlans();
-
-    });
-
-});
 
 /* ============================================================
     RENDER PLANS
@@ -420,7 +322,7 @@ function renderPlans() {
 
     pricingGrid.innerHTML = "";
 
-    PLANS.filter(plan => plan.currency === selectedCurrency).forEach(plan => {
+    PLANS.forEach(plan => {
 
         const card = document.createElement("div");
 
@@ -456,14 +358,14 @@ function renderPlans() {
 
     <div class="plan-price">
 
-        ${Utils.formatCurrency(plan.amount, plan.currency)}
+        ${Utils.formatCurrency(plan.amount)}
 
     </div>
 
     <div class="plan-rate">
 
         ${Utils.formatCurrency(
-            plan.amount / plan.pages, plan.currency
+            plan.amount / plan.pages
         )} per page
 
     </div>
@@ -711,7 +613,7 @@ function renderPendingVerifications() {
 
                     <div class="pending-amount">
 
-                        ${Utils.formatCurrency(verification.amount, verification.currency)}
+                        ${Utils.formatCurrency(verification.amount)}
 
                     </div>
 
@@ -864,7 +766,7 @@ function openFlutterwaveCheckout() {
 
         amount: selectedPlan.amount,
 
-        currency: selectedPlan.currency,
+        currency: CURRENCY,
 
         payment_options:
             "card,banktransfer,ussd",
@@ -914,8 +816,6 @@ async function handlePaymentCallback(payment) {
         tx_ref: payment.tx_ref,
 
         amount: selectedPlan.amount,
-
-        currency: selectedPlan.currency,
 
         pages: selectedPlan.pages,
 
@@ -1368,8 +1268,6 @@ document
 initialize();
 
 function initialize() {
-
-    updateCurrencyTabs();
 
     renderPlans();
 

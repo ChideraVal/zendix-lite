@@ -325,19 +325,21 @@ const Utils = (() => {
     // Currency Formatting
     // --------------------------------------------------
 
-    function formatCurrency(amount) {
+    function formatCurrency(amount, currency) {
 
         return new Intl.NumberFormat(
 
-            "en-NG",
+            currency === "NGN" ? "en-NG" : "en-US",
 
             {
 
                 style: "currency",
 
-                currency: "NGN",
+                currency: currency,
 
-                maximumFractionDigits: 0
+                minimumFractionDigits: currency === "NGN" ? 0 : 2,
+                
+                maximumFractionDigits: currency === "NGN" ? 0 : 2,
 
             }
 

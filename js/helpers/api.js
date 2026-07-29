@@ -5,8 +5,8 @@
 
 const Api = (() => {
 
-    const BASE_URL = "https://api.zendix.app/v1";
-    // const BASE_URL = " http://127.0.0.1:8000/v1";
+    // const BASE_URL = "https://api.zendix.app/v1";
+    const BASE_URL = " http://127.0.0.1:8000/v1";
 
     function loop_error_details(error) {
         let error_messages = ""
@@ -177,8 +177,8 @@ const Api = (() => {
     }
 
     /* ============================================================
-    VERIFY PAYMENT
-============================================================ */
+        VERIFY PAYMENT
+    ============================================================ */
 
     async function verifyPayment(data) {
 
@@ -211,6 +211,18 @@ const Api = (() => {
     }
 
     /* --------------------------------------------------------
+       Get Usage
+    -------------------------------------------------------- */
+
+    async function getUsage() {
+
+        const access_code = Storage.getAccessCode();
+
+        return request(`/usage/${access_code}/`);
+
+    }
+
+    /* --------------------------------------------------------
        Health Check
     -------------------------------------------------------- */
 
@@ -229,6 +241,8 @@ const Api = (() => {
         purchaseAccessCode,
 
         verifyPayment,
+
+        getUsage,
 
         ping
 
